@@ -74,10 +74,8 @@ class _MyHomePageState extends State<MyHomePage> {
     switch (selectedIndex) {
       case 0:
         page = GeneratorPage();
-        break;
       case 1:
         page = FavoritesPage();
-        break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
@@ -208,10 +206,9 @@ class GeneratorPage extends StatelessWidget {
 
 class Randomizer extends StatelessWidget {
   const Randomizer({
-    Key? key,
+    super.key,
     required this.pair,
-  }) : super(key: key);
-
+  });
   final WordPair pair;
 
   @override
@@ -300,7 +297,7 @@ class FavoritesPage extends StatelessWidget {
 }
 
 class HistoryListView extends StatefulWidget {
-  const HistoryListView({Key? key}) : super(key: key);
+  const HistoryListView({super.key});
 
   @override
   State<HistoryListView> createState() => _HistoryListViewState();
