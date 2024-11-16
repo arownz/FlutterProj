@@ -1,0 +1,9 @@
+{
+    "java.compile.nullAnalysis.mode": "automatic",
+    "dart.flutterHotReloadOnSave": "all",
+    "dart.hotReloadOnSave": "all",
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 500,
+    "files.autoSaveWorkspaceFilesOnly": false,
+    "dart.flutterGenerateLocalizationsOnSave": "never"
+}
