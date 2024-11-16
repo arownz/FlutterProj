@@ -1,4 +1,4 @@
-# test_appagain - basic click counting
+# test_appagain - basic click counting.
 
 A new Flutter project.
 
