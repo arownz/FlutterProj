@@ -64,25 +64,25 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var selectedIndex = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    var colorScheme = Theme.of(context).colorScheme;
-
-    Widget page;
-    switch (selectedIndex) {
-      case 0:
-        page = GeneratorPage();
-      case 1:
-        page = FavoritesPage();
-      default:
-        throw UnimplementedError('no widget for $selectedIndex');
-    }
-
-    // The container for the current page, with its background color
-    // and subtle switching animation.
-    var mainArea = ColoredBox(
+ var selectedIndex = 0;
+ 
+ @override
+ Widget build(BuildContext context) {
+   var colorScheme = Theme.of(context).colorScheme;
+ 
+   Widget page;
+   switch (selectedIndex) {
+     case 0:
+       page = GeneratorPage();
+     case 1:
+       page = FavoritesPage();
+     default:
+       throw UnimplementedError('no widget for $selectedIndex');
+   }
+ 
+   // The container for the current page, with its background color
+   // and subtle switching animation.
+   var mainArea = ColoredBox(
       color: colorScheme.surfaceContainerHighest,
       child: AnimatedSwitcher(
         duration: Duration(milliseconds: 200),
@@ -209,6 +209,7 @@ class Randomizer extends StatelessWidget {
     super.key,
     required this.pair,
   });
+
   final WordPair pair;
 
   @override
@@ -343,10 +344,10 @@ class _HistoryListViewState extends State<HistoryListView> {
                   appState.toggleFavorite(pair);
                 },
                 icon: appState.favorites.contains(pair)
-                    ? Icon(Icons.favorite, size: 50)
+                    ? Icon(Icons.favorite, size: 25, color: Colors.red, semanticLabel: 'Favorite')
                     : SizedBox(),
                 label: Text(
-                  pair.asPascalCase,
+                  pair.asLowerCase,
                   semanticsLabel: pair.asPascalCase,
                 ),
               ),
