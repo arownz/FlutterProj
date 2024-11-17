@@ -9,10 +9,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
   pdf: ^3.7.0
-  path_provider: ^2.0.4
-  flutter_pdfview: ^1.2.1
+  path_provider: ^2.0.15
+  flutter_pdfview: ^1.2.9
 
 dev_dependencies:
   flutter_test:

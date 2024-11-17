@@ -1,13 +1,36 @@
+import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf_generator/flutter_pdfview/pdf_preview_screen.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(
+    MaterialApp(
+      title: 'PDF Demo',
+      home: MyApp(),
+    ),
+  );
+}
+
+Future<String?> getDocumentsDirectory() async {
+  try {
+    if (kIsWeb) {
+      return '/'; // For web, we'll use the root directory
+    } else {
+      final directory = await getApplicationDocumentsDirectory();
+      return directory.path;
+    }
+  } catch (e) {
+    if (kDebugMode) {
+      print('Error getting documents directory: $e');
+    }
+    return null;
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -85,14 +108,28 @@ aliquam nulla facilisi cras fermentum.
     ));
   }
 
-  Future<void> savePdf() async {
-    Directory documentDirectory = await getApplicationDocumentsDirectory();
-    String documentPath = documentDirectory.path;
-    File file = File('$documentPath/example.pdf');
-
-    Uint8List pdfData = await pdf.save();
-
-    await file.writeAsBytes(pdfData);
+  Future<String?> savePdf() async {
+    try {
+      final documentPath = await getDocumentsDirectory();
+      if (documentPath == null) {
+        throw Exception('Could not get documents directory');
+      }
+      final pdfBytes = await pdf.save();
+      if (kIsWeb) {
+        // For web, we'll return the raw bytes as a data URL
+        final base64 = base64Encode(pdfBytes);
+        return 'data:application/pdf;base64,$base64';
+      } else {
+        final file = File('$documentPath/example.pdf');
+        await file.writeAsBytes(pdfBytes);
+        return file.path;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error saving PDF: $e');
+      }
+      return null;
+    }
   }
 
   @override
@@ -120,22 +157,19 @@ aliquam nulla facilisi cras fermentum.
                 ),
                 onPressed: () async {
                   writeOnPdf();
-                  await savePdf();
-
-                  Directory documentDirectory =
-                      await getApplicationDocumentsDirectory();
-
-                  String documentPath = documentDirectory.path;
-
-                  String fullPath = "$documentPath/example.pdf";
-                  print(fullPath);
-
-                  Navigator.push(
+                  final pdfPath = await savePdf();
+                  if (pdfPath != null) {
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => PdfPreviewScreen(
-                                path: fullPath,
-                              )));
+                        builder: (context) => PdfPreviewScreen(path: pdfPath),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Failed to generate PDF')),
+                    );
+                  }
                 },
               ),
             ),
