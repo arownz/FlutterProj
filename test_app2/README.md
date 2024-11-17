@@ -1,4 +1,4 @@
-# test_app2
+# test_app2 - a random pascal pair english word generator and favoriting
 
 A new Flutter project.
 
