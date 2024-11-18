@@ -1,0 +1,6 @@
+{
+  "appTitle": "magic_8_ball",
+  "@appTitle": {
+    "description": "The title of the application"
+  }
+}
