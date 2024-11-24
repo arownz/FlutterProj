@@ -9,6 +9,12 @@ class MainApp extends StatefulWidget {
 
   @override
   _MainAppState createState() => _MainAppState();
+
+  // Alternatively, you can make the class private and expose a factory constructor or a static method:
+  //
+  // static MainApp create() {
+  //   return MainApp();
+  // }
 }
 
 class _MainAppState extends State<MainApp> {
