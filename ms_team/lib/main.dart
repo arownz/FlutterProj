@@ -1,4 +1,5 @@
 // Import Flutter packages
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,71 +14,27 @@ class MSTeamsDashboard extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: const Row(
-            children: [
-              Icon(Icons.group, color: Colors.blue),
-              SizedBox(width: 8),
-              Text(
-                'Teams',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20),
-              ),
-            ],
-          ),
-          centerTitle: false,
-          actions: [
-            // New Join or Create Team Button
-            // Popup Menu with Horizontal Icon
-            PopupMenuButton<String>(
-              icon: const Icon(Icons.more_horiz, color: Colors.black),
-              onSelected: (value) {
-                if (value == 'settings') {
-                  // Action for settings
-                }
-              },
-              itemBuilder: (BuildContext context) {
-                return [
-                  const PopupMenuItem<String>(
-                    value: 'settings',
-                    child: Row(
-                      children: [
-                        Icon(Icons.settings, color: Colors.black54),
-                        SizedBox(width: 8),
-                        Text('Your teams and channels'),
-                      ],
-                    ),
-                  ),
-                ];
-              },
-            ),
-                        TextButton.icon(
-              onPressed: () {
-                // Action for join or create team
-              },
-              icon: const Icon(Icons.add, color: Colors.black),
-              label: const Text(
-                'Join or create team',
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
-          ],
-        ),
-        body: const Row(
+        backgroundColor: Colors.grey.shade200,
+        body: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             LeftNavBar(),
-            Expanded(child: DashboardBody()),
+            Expanded(
+              child: Column(
+                children: [
+                  Header(),
+                  Expanded(child: DashboardBody()),
+                ],
+              ),
+            ),
           ],
         ),
-        backgroundColor: Colors.grey.shade200,
       ),
     );
   }
 }
 
+// LEFT NAVIGATION MENU
 class LeftNavBar extends StatefulWidget {
   const LeftNavBar({super.key});
 
@@ -94,70 +51,48 @@ class _LeftNavBarState extends State<LeftNavBar> {
       width: 80,
       color: Colors.white,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           const SizedBox(height: 16),
-          NavItem(icon: Icons.group, label: 'Teams', isSelected: _selectedIndex == 0, onTap: () => _onItemTapped(0)),
-          NavItem(icon: Icons.notifications_none, label: 'Activity', isSelected: _selectedIndex == 1, onTap: () => _onItemTapped(1)),
-          NavItem(icon: Icons.chat_bubble_outline, label: 'Chat', isSelected: _selectedIndex == 2, onTap: () => _onItemTapped(2)),
-          NavItem(icon: Icons.assignment_outlined, label: 'Assignments', isSelected: _selectedIndex == 3, onTap: () => _onItemTapped(3)),
-          NavItem(icon: Icons.calendar_today_outlined, label: 'Calendar', isSelected: _selectedIndex == 4, onTap: () => _onItemTapped(4)),
-          NavItem(icon: Icons.call, label: 'Calls', isSelected: _selectedIndex == 5, onTap: () => _onItemTapped(5)),
-          NavItem(icon: Icons.cloud_outlined, label: 'OneDrive', isSelected: _selectedIndex == 6, onTap: () => _onItemTapped(6)),
-          NavItem(icon: Icons.group_work_outlined, label: 'Viva Engage', isSelected: _selectedIndex == 7, onTap: () => _onItemTapped(7)),
-          NavItem(icon: Icons.more_horiz, label: 'More', isSelected: _selectedIndex == 8, onTap: () => _onItemTapped(8)),
+          _buildNavItem(icon: Icons.group, label: "Teams", index: 0),
+          _buildNavItem(
+              icon: Icons.notifications_none, label: "Activity", index: 1),
+          _buildNavItem(
+              icon: Icons.chat_bubble_outline, label: "Chat", index: 2),
+          _buildNavItem(
+              icon: Icons.assignment_outlined, label: "Assignments", index: 3),
+          _buildNavItem(
+              icon: Icons.calendar_today_outlined, label: "Calendar", index: 4),
+          _buildNavItem(icon: Icons.phone, label: "Phone", index: 5),
+          _buildNavItem(icon: Icons.cloud_outlined, label: "One Drive", index: 6),
+          _buildNavItem(
+              icon: Icons.people_outline, label: "Viva Engage", index: 7),
+          _buildNavItem(icon: Icons.more_horiz, label: "More", index: 8),
           const Spacer(),
-          NavItem(icon: Icons.apps, label: 'Apps', isSelected: _selectedIndex == 9, onTap: () => _onItemTapped(9)),
+          _buildNavItem(icon: Icons.apps, label: "Apps", index: 9),
           const SizedBox(height: 16),
         ],
       ),
     );
   }
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    // Add navigation logic here
-    print('Tapped on item $index');
-  }
-}
-
-class NavItem extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const NavItem({
-    super.key,
-    required this.icon,
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
+  Widget _buildNavItem(
+      {required IconData icon, required String label, required int index}) {
+    return InkWell(
+      onTap: () => setState(() => _selectedIndex = index),
+      hoverColor: Colors.blue.withOpacity(0.2),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Column(
           children: [
-            Icon(
-              icon,
-              color: isSelected ? Colors.blue : Colors.grey,
-              size: 28,
-            ),
+            Icon(icon,
+                color: _selectedIndex == index ? Colors.blue : Colors.grey,
+                size: 28),
             const SizedBox(height: 4),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 10,
-                color: isSelected ? Colors.blue : Colors.grey,
-              ),
-            ),
+            Text(label,
+                style: TextStyle(
+                  fontSize: 10,
+                  color: _selectedIndex == index ? Colors.blue : Colors.grey,
+                )),
           ],
         ),
       ),
@@ -165,49 +100,125 @@ class NavItem extends StatelessWidget {
   }
 }
 
+// HEADER BAR
+class Header extends StatelessWidget {
+  const Header({super.key});
 
-// Body for the dashboard layout
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(Icons.group, color: Colors.blue),
+          SizedBox(width: 8),
+          Text(
+            "Teams",
+            style: TextStyle(
+                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+          Spacer(),
+          IconButton(
+              icon: Icon(Icons.more_horiz, color: Colors.black),
+              onPressed: () {}),
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey.shade300),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: TextButton.icon(
+              onPressed: () {},
+              icon: Icon(Icons.person_add, color: Colors.black),
+              label: Text(
+                'Join or create team',
+                style: TextStyle(color: Colors.black),
+              ),
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                minimumSize: Size(0, 0),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+            ),
+          ),
+
+        ],
+      ),
+    );
+  }
+}
+
+// BODY WITH CARDS
 class DashboardBody extends StatelessWidget {
   const DashboardBody({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(50.0),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Classes',
-              style: TextStyle(
-                  fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
-            ),
-            const SizedBox(height: 5),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
-                childAspectRatio: 1.2,
+            TextButton.icon(
+              onPressed: () {
+                if (kDebugMode) {
+                  print('Classes button clicked');
+                }
+              },
+              icon: const Icon(
+                Icons.arrow_drop_down_sharp,
+                color: Colors.black,
               ),
-              itemCount: 5, // Number of tiles on the screen
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    // Action for tapping the card
+              label: const Text(
+                'Classes',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            const SizedBox(height: 15),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final crossAxisCount = (constraints.maxWidth / 340).floor();
+                return GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                    crossAxisSpacing: 0.25,
+                    mainAxisSpacing: 25,
+                    childAspectRatio: 1.6,
+                  ),
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                    return TeamCard(index: index);
                   },
-                  child: TeamCard(index: index),
                 );
               },
             ),
             const SizedBox(height: 24),
-            const Text(
-              'Teams',
-              style: TextStyle(
-                  fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+            TextButton.icon(
+              onPressed: () {
+                if (kDebugMode) {
+                  print('Teams button clicked');
+                }
+              },
+              icon: const Icon(
+                Icons.keyboard_arrow_right_sharp,
+                color: Colors.black,
+              ),
+              label: const Text(
+                'Teams',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
             ),
           ],
         ),
@@ -216,7 +227,7 @@ class DashboardBody extends StatelessWidget {
   }
 }
 
-// Widget to create individual team cards
+// CARDS FOR TEAMS
 class TeamCard extends StatelessWidget {
   final int index;
 
@@ -233,47 +244,114 @@ class TeamCard extends StatelessWidget {
     ];
 
     final List<String> images = [
-      "assets/class_icon1.png",
-      "assets/class_icon2.png",
-      "assets/class_icon3.png",
-      "assets/class_icon4.png",
-      "assets/class_icon5.png",
+      "assets/mobile-removebg-preview.png",
+      "assets/mobile-removebg-preview.png",
+      "assets/a_logo_of_machine_learning_inside_the_computer-removebg-preview.png",
+      "assets/dasdadsa-removebg-preview.png",
+      "assets/mobile-removebg-preview.png",
     ];
 
-    return GestureDetector(
+    return InkWell(
       onTap: () {
-        // Action when clicking on the card
+        if (kDebugMode) {
+          print('Card ${index + 1} clicked');
+        }
       },
       child: Card(
         elevation: 2,
         color: Colors.white,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(8),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              images[index],
-              height: 50,
-              width: 50,
-              fit: BoxFit.cover,
-            ),
-            const SizedBox(height: 8),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4.0),
-              child: Text(
-                titles[index],
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AspectRatio(
+                      aspectRatio: 1,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(4),
+                          child: Image.asset(
+                            images[index],
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          return Text(
+                            titles[index],
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: constraints.maxWidth < 150 ? 14 : 18,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          );
+                        },
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.more_horiz, size: 24),
+                      onPressed: () {
+                        if (kDebugMode) {
+                          print('More options for card ${index + 1}');
+                        }
+                      },
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.note, size: 24, color: Colors.grey[600]),
+                    onPressed: () {
+                      if (kDebugMode) {
+                        print('Note icon clicked for card ${index + 1}');
+                      }
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.work, size: 24, color: Colors.grey[600]),
+                    onPressed: () {
+                      if (kDebugMode) {
+                        print('Work icon clicked for card ${index + 1}');
+                      }
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.book, size: 24, color: Colors.grey[600]),
+                    onPressed: () {
+                      if (kDebugMode) {
+                        print('Book icon clicked for card ${index + 1}');
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
+
+
