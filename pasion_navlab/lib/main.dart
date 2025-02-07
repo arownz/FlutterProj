@@ -79,7 +79,7 @@ class HomeScreenState extends State<HomeScreen> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Colors.blue.withOpacity(0.3), Colors.white],
+            colors: [Colors.blue.withAlpha(76), Colors.white],
           ),
         ),
         child: Padding(
@@ -392,6 +392,29 @@ class AppBottomNavigation extends StatefulWidget {
 class AppBottomNavigationState extends State<AppBottomNavigation> {
   int _selectedIndex = 0;
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Update selected index based on current route
+    final String currentRoute = ModalRoute.of(context)?.settings.name ?? '/';
+    _selectedIndex = _getIndexFromRoute(currentRoute);
+  }
+
+  int _getIndexFromRoute(String route) {
+    switch (route) {
+      case '/':
+        return 0;
+      case '/about':
+        return 1;
+      case '/settings':
+        return 2;
+      case '/profile':
+        return 3;
+      default:
+        return 0;
+    }
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -399,16 +422,16 @@ class AppBottomNavigationState extends State<AppBottomNavigation> {
 
     switch (index) {
       case 0:
-        Navigator.pushNamed(context, '/');
+        Navigator.pushReplacementNamed(context, '/');
         break;
       case 1:
-        Navigator.pushNamed(context, '/about');
+        Navigator.pushReplacementNamed(context, '/about');
         break;
       case 2:
-        Navigator.pushNamed(context, '/settings');
+        Navigator.pushReplacementNamed(context, '/settings');
         break;
       case 3:
-        Navigator.pushNamed(context, '/profile');
+        Navigator.pushReplacementNamed(context, '/profile');
         break;
     }
   }
