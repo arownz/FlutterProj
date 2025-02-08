@@ -85,13 +85,13 @@ class _StudentListScreenState extends State<StudentListScreen> {
                                 Colors.blue.withAlpha(25),
                               ),
                               columns: const [
-                                DataColumn(
+                                /* DataColumn(
                                   label: Text(
                                     'Student Number',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                ),
+                                ),*/
                                 DataColumn(
                                   label: Text(
                                     'Full Name',
@@ -99,13 +99,13 @@ class _StudentListScreenState extends State<StudentListScreen> {
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                                DataColumn(
+                                /* DataColumn(
                                   label: Text(
                                     'Birthday',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                ),
+                                ),*/ 
                                 DataColumn(
                                   label: Text(
                                     'Course',
@@ -113,30 +113,30 @@ class _StudentListScreenState extends State<StudentListScreen> {
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                                DataColumn(
+                                /* DataColumn(
                                   label: Text(
                                     'Email',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                ),
-                                DataColumn(
+                                ), */
+                                /* DataColumn(
                                   label: Text(
                                     'CP Number',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                ),
+                                ), */
                               ],
                               rows: _students
                                   .map((student) => DataRow(
                                         cells: [
-                                          DataCell(Text(student.studentNumber)),
+                                          // DataCell(Text(student.studentNumber)),
                                           DataCell(Text(student.fullName)),
-                                          DataCell(Text(student.birthday)),
+                                          // DataCell(Text(student.birthday)),
                                           DataCell(Text(student.course)),
-                                          DataCell(Text(student.email)),
-                                          DataCell(Text(student.cpNumber)),
+                                          //DataCell(Text(student.email)),
+                                          //DataCell(Text(student.cpNumber)),
                                         ],
                                       ))
                                   .toList(),

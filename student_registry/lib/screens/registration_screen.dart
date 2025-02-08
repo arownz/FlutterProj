@@ -18,6 +18,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _cpNumberController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool _obscurePassword = true; // For password visibility toggle
   final _apiService = ApiService();
   
   DateTime? _selectedDate;
@@ -168,6 +170,35 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     return null;
                   },
                 ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _passwordController,
+                  obscureText: _obscurePassword,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                        color: Colors.grey,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscurePassword = !_obscurePassword;
+                        });
+                      },
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter password';
+                    }
+                    if (value.length < 8) {
+                      return 'Password must be at least 8 characters';
+                    }
+                    return null;
+                  },
+                ),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: _submitForm,
@@ -209,6 +240,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           course: _selectedCourse!,
           email: _emailController.text,
           cpNumber: _cpNumberController.text,
+          password: _passwordController.text, // Add this line
         );
 
         await _apiService.registerStudent(student);
@@ -223,6 +255,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         });
         _emailController.clear();
         _cpNumberController.clear();
+        _passwordController.clear(); // Add this to clear password
 
         // Show success message
         ScaffoldMessenger.of(context).showSnackBar(
@@ -238,6 +271,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   void dispose() {
+    _passwordController.dispose(); // Add this line
     _studentNumberController.dispose();
     _fullNameController.dispose();
     _emailController.dispose();
