@@ -21,18 +21,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _passwordController = TextEditingController();
   bool _obscurePassword = true; // For password visibility toggle
   final _apiService = ApiService();
-  
+  bool _isLoading = false; // Add this to your state class
+
   DateTime? _selectedDate;
   String? _selectedCourse;
-  
-  final List<String> _courses = [
-    'BSIT',
-    'BSCS',
-    'BSBA',
-    'BSA',
-    'BSED',
-    'BEED'
-  ];
+
+  final List<String> _courses = ['BSIT', 'BSCS', 'BSBA', 'BSA', 'BSCPE', 'BSCE'];
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +173,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                        _obscurePassword
+                            ? Icons.visibility_off
+                            : Icons.visibility,
                         color: Colors.grey,
                       ),
                       onPressed: () {
@@ -201,7 +197,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: _submitForm,
+                  onPressed: _isLoading ? null : _submitForm,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
                     foregroundColor: Colors.white,
@@ -214,13 +210,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ),
                     minimumSize: const Size(200, 50),
                   ),
-                  child: const Text(
-                    'Register',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  child: _isLoading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text(
+                          'Register',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                 ),
               ],
             ),
@@ -230,9 +228,31 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
   }
 
+  // Update the _submitForm method
   void _submitForm() async {
     if (_formKey.currentState!.validate() && _selectedDate != null) {
+      setState(() => _isLoading = true);
+
       try {
+        // Check for existing user
+        final exists = await _apiService.checkExistingUser(
+          _studentNumberController.text,
+          _emailController.text,
+        );
+
+        if (exists) {
+          setState(() => _isLoading = false);
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Student number or email already registered'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+          return;
+        }
+
         final student = Student(
           studentNumber: _studentNumberController.text,
           fullName: _fullNameController.text,
@@ -245,26 +265,30 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
         await _apiService.registerStudent(student);
 
-        // Clear form after successful registration
         _formKey.currentState!.reset();
         _studentNumberController.clear();
         _fullNameController.clear();
         setState(() {
           _selectedDate = null;
           _selectedCourse = null;
+          _isLoading = false;
         });
         _emailController.clear();
         _cpNumberController.clear();
         _passwordController.clear(); // Add this to clear password
 
-        // Show success message
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Student registered successfully')),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Student registered successfully')),
+          );
+        }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: ${e.toString()}')),
-        );
+        setState(() => _isLoading = false);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error: ${e.toString()}')),
+          );
+        }
       }
     }
   }

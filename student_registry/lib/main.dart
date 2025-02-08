@@ -12,7 +12,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Student Registry',
+      title: 'Student Registry (Pasion)',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_selectedIndex == 0 ? 'Student Registration' : 'Student List'),
+        title: Text(_selectedIndex == 0 ? 'Student Registration (Pasion)' : 'Student List'),
       ),
       drawer: Drawer(
         child: ListView(
@@ -56,10 +56,10 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               child: Text(
-                'Student Registration',
+                'Student Registration (Pasion)',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 24,
+                  fontSize: 15,
                   fontWeight: FontWeight.bold,
                 ),
               ),

@@ -69,82 +69,23 @@ class _StudentListScreenState extends State<StudentListScreen> {
               else
                 Card(
                   elevation: 4,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        return SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: ConstrainedBox(
-                            constraints: BoxConstraints(
-                              minWidth: constraints.maxWidth,
-                            ),
-                            child: DataTable(
-                              columnSpacing: 20,
-                              headingRowColor: WidgetStateProperty.all(
-                                Colors.blue.withAlpha(25),
-                              ),
-                              columns: const [
-                                /* DataColumn(
-                                  label: Text(
-                                    'Student Number',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ),*/
-                                DataColumn(
-                                  label: Text(
-                                    'Full Name',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                /* DataColumn(
-                                  label: Text(
-                                    'Birthday',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ),*/ 
-                                DataColumn(
-                                  label: Text(
-                                    'Course',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                /* DataColumn(
-                                  label: Text(
-                                    'Email',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ), */
-                                /* DataColumn(
-                                  label: Text(
-                                    'CP Number',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ), */
-                              ],
-                              rows: _students
-                                  .map((student) => DataRow(
-                                        cells: [
-                                          // DataCell(Text(student.studentNumber)),
-                                          DataCell(Text(student.fullName)),
-                                          // DataCell(Text(student.birthday)),
-                                          DataCell(Text(student.course)),
-                                          //DataCell(Text(student.email)),
-                                          //DataCell(Text(student.cpNumber)),
-                                        ],
-                                      ))
-                                  .toList(),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: _students.length,
+                    separatorBuilder: (context, index) => const Divider(height: 1),
+                    itemBuilder: (context, index) {
+                      final student = _students[index];
+                      return ListTile(
+                        title: Text(
+                          student.fullName,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(student.course),
+                        tileColor: index.isEven ? Colors.blue.withAlpha(13) : null,
+                        shape: Border.all(color: Colors.grey.withAlpha(9)),
+                      );
+                    },
                   ),
                 ),
             ],
