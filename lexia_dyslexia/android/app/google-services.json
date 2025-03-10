@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "746497205021",
+    "firebase_url": "https://teamlexia-46228-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "teamlexia-46228",
+    "storage_bucket": "teamlexia-46228.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:746497205021:android:1615d063c9d8c03522b7f4",
+        "android_client_info": {
+          "package_name": "com.vaultech.Lexia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "746497205021-i3dg0f7g7pdrkuadohkftsjhig0pvrdi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vaultech.Lexia",
+            "certificate_hash": "5dfd909e31c0aa9a2ad1442ae84b71d6a579899a"
+          }
+        },
+        {
+          "client_id": "746497205021-v0tplt8aanv0t4ir3o3ql1p0b753n3or.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoVgYeTEpEkqrH0OA_UMbl1oZLvTuWMA0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "746497205021-0mp8orp3fcus5rb4oghiivr8s6gu2u8v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
