@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lexia Dyslexia'),
+        title: const Text('Lexia - Dyslexia'),
         actions: [
           if (!isLoggedIn) ...[
             if (isDesktop || isTablet) ...[
@@ -203,10 +203,10 @@ class HomeScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         Text(
-                          'Lexia is a Pokémon-style game designed specifically for children with dyslexia. '
+                          'Lexia is a Capybara Go!-style game designed specifically for children with dyslexia. '
                           'Our game incorporates cutting-edge technologies like Google Digital Ink Recognition for '
-                          'spelling practice, Text-to-Speech, Speech-to-Text, and NLP to provide an engaging and '
-                          'effective learning experience.',
+                          'spelling practice, Text-to-Speech, Speech-to-Text, and NLP (Natural Language Processing) to provide an engaging and '
+                          'effective learning experience for dyslexia person.',
                           style: Theme.of(context).textTheme.bodyLarge,
                           textAlign: TextAlign.center,
                         ),
@@ -223,7 +223,7 @@ class HomeScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('© 2025 Lexia Dyslexia'),
+                    const Text('© 2025 Lexia - Dyslexia'),
                     Row(
                       children: [
                         TextButton(
@@ -374,7 +374,7 @@ class HomeScreen extends StatelessWidget {
             const Divider(),
             const SizedBox(height: 16),
             const Center(
-              child: Text('© 2025 Lexia Dyslexia'),
+              child: Text('© 2025 Lexia - Dyslexia'),
             ),
             const SizedBox(height: 8),
             Row(

@@ -56,7 +56,7 @@ class FirebaseInitErrorApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Lexia Dyslexia',
+      title: 'Lexia - Dyslexia',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         useMaterial3: true,
@@ -146,7 +146,7 @@ class MyApp extends StatelessWidget {
     );
 
     return MaterialApp.router(
-      title: 'Lexia Dyslexia',
+      title: 'Lexia - Dyslexia',
       debugShowCheckedModeBanner: false,
       routerConfig: router,
       theme: ThemeData(
