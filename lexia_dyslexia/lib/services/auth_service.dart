@@ -111,7 +111,6 @@ class AuthService with ChangeNotifier {
       _error = null;
       notifyListeners();
       
-      // Create user in Firebase Auth
       UserCredential result = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,

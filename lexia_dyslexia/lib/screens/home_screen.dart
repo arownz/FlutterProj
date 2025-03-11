@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../services/auth_service.dart';
 import 'profile/user_profile_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../widgets/interactive_feature_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -204,8 +206,7 @@ class HomeScreen extends StatelessWidget {
                         const SizedBox(height: 20),
                         Text(
                           'Lexia is a Capybara Go!-style game designed specifically for children with dyslexia. '
-                          'Our game incorporates cutting-edge technologies like Google Digital Ink Recognition for '
-                          'spelling practice, Text-to-Speech, Speech-to-Text, and NLP (Natural Language Processing) to provide an engaging and '
+                          'Our game incorporates cutting-edge technologies to provide an engaging and '
                           'effective learning experience for dyslexia person.',
                           style: Theme.of(context).textTheme.bodyLarge,
                           textAlign: TextAlign.center,
@@ -237,6 +238,11 @@ class HomeScreen extends StatelessWidget {
                         TextButton(
                           onPressed: () {},
                           child: const Text('Contact Us'),
+                        ),
+                        IconButton(
+                          onPressed: () => _launchUrl('https://github.com/arownz/FlutterProj'),
+                          icon: const Icon(Icons.code),
+                          tooltip: 'GitHub Repository',
                         ),
                       ],
                     ),
@@ -277,7 +283,7 @@ class HomeScreen extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const SizedBox(height: 24),
-                  
+                  // Continue fixing the rest of the mobile layout...
                   // Image placeholder
                   Container(
                     height: 180,
@@ -289,7 +295,6 @@ class HomeScreen extends StatelessWidget {
                       child: Icon(Icons.games, size: 80, color: Colors.blue),
                     ),
                   ),
-                  
                   const SizedBox(height: 24),
                   if (!isLoggedIn)
                     Center(
@@ -307,7 +312,6 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            
             const SizedBox(height: 32),
             
             // Features Section
@@ -348,7 +352,6 @@ class HomeScreen extends StatelessWidget {
               color: Colors.purple.shade100,
               isLocked: !isLoggedIn || (userRole != UserRole.teacher && userRole != UserRole.admin),
             ),
-            
             const SizedBox(height: 40),
             
             // About Section
@@ -367,7 +370,6 @@ class HomeScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
-            
             const SizedBox(height: 40),
             
             // Mobile Footer
@@ -395,6 +397,11 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
+            IconButton(
+              onPressed: () => _launchUrl('https://github.com/arownz/FlutterProj'),
+              icon: const Icon(Icons.code),
+              tooltip: 'GitHub Repository',
+            ),
           ],
         ),
       ),
@@ -410,59 +417,32 @@ class HomeScreen extends StatelessWidget {
     required Color color,
     bool isLocked = false,
   }) {
-    return Card(
-      color: color,
-      child: InkWell(
-        onTap: isLocked ? () => _showLoginDialog(context) : onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    icon,
-                    size: 32,
-                    color: Colors.black87,
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      title,
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                  ),
-                  if (isLocked)
-                    const Icon(Icons.lock, color: Colors.black45),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Text(
-                description,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const SizedBox(height: 12),
-              Align(
-                alignment: Alignment.centerRight,
-                child: isLocked 
-                  ? TextButton.icon(
-                      onPressed: () => _showLoginDialog(context),
-                      icon: const Icon(Icons.login),
-                      label: const Text('Login to Access'),
-                    )
-                  : TextButton.icon(
-                      onPressed: onTap,
-                      icon: const Icon(Icons.arrow_forward),
-                      label: const Text('Access'),
-                    ),
-              ),
-            ],
-          ),
-        ),
-      ),
+    // Get theme colors
+    final theme = Theme.of(context);
+    final iconColor = theme.colorScheme.primary;
+    
+    // Define hover colors based on the base color
+    final hoverColor = color.withValues(alpha: 0.7);
+    
+    return InteractiveFeatureCard(
+      title: title,
+      description: description,
+      icon: icon,
+      onTap: onTap,
+      baseColor: color,
+      iconColor: iconColor,
+      hoverColor: hoverColor,
+      isLocked: isLocked,
+      onLockTap: () => _showLoginDialog(context),
     );
+  }
+
+  // Helper method to launch URLs
+  Future<void> _launchUrl(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri)) {
+      throw Exception('Could not launch $url');
+    }
   }
 
   void _showLoginDialog(BuildContext context) {

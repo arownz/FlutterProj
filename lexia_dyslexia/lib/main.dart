@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 // Importing screens
 import 'screens/home_screen.dart';
@@ -234,5 +235,15 @@ class MyApp extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+// Add this function somewhere in your app
+Future<void> launchUrlHelper(String url) async {
+  final uri = Uri.parse(url);
+  if (await url_launcher.canLaunchUrl(uri)) {
+    await url_launcher.launchUrl(uri);
+  } else {
+    throw 'Could not launch $url';
   }
 }

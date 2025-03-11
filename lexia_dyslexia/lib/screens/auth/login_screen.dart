@@ -261,8 +261,30 @@ class _LoginScreenState extends State<LoginScreen> {
         _passwordController.text.trim(),
       );
 
-      if (success && mounted) {
-        context.go('/');
+      if (mounted) {
+        if (success) {
+          // Show success notification
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Login successful! Welcome back.'),
+              backgroundColor: Colors.green,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+          // Navigate to home after showing the success message
+          Future.delayed(const Duration(milliseconds: 500), () {
+            if (mounted) context.go('/');
+          });
+        } else {
+          // Show error notification
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(authService.error ?? 'Login failed'),
+              backgroundColor: Colors.red,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        }
       }
     }
   }

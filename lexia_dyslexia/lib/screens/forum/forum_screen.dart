@@ -5,6 +5,7 @@ import '../../services/auth_service.dart';
 import '../../services/forum_service.dart';
 import 'create_post_screen.dart';
 import 'post_detail_screen.dart';
+import '../../widgets/hover_effect_card.dart';
 
 class ForumScreen extends StatefulWidget {
   const ForumScreen({super.key});
@@ -329,7 +330,7 @@ class _ForumScreenState extends State<ForumScreen> {
         separatorBuilder: (context, index) => const Divider(),
         itemBuilder: (context, index) {
           final post = filteredPosts[index];
-          return InkWell(
+          return HoverEffectCard(
             onTap: () {
               Navigator.push(
                 context,
@@ -338,114 +339,110 @@ class _ForumScreenState extends State<ForumScreen> {
                 ),
               );
             },
-            borderRadius: BorderRadius.circular(12),
-            child: Card(
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          child: Text(
-                            post.authorName.isNotEmpty
-                                ? post.authorName[0].toUpperCase()
-                                : '?',
-                            style: const TextStyle(color: Colors.white),
-                          ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        child: Text(
+                          post.authorName.isNotEmpty
+                              ? post.authorName[0].toUpperCase()
+                              : '?',
+                          style: const TextStyle(color: Colors.white),
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                post.title,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Row(
-                                children: [
-                                  Text(
-                                    'By ${post.authorName}',
-                                    style: TextStyle(color: Colors.grey.shade700),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    '• ${DateFormat.yMMMd().format(post.createdAt)}',
-                                    style: TextStyle(color: Colors.grey.shade700),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      post.content.length > 150 
-                          ? '${post.content.substring(0, 150)}...' 
-                          : post.content,
-                    ),
-                    const SizedBox(height: 16),
-                    Wrap(
-                      spacing: 8,
-                      children: post.tags.map((tag) {
-                        return Chip(
-                          label: Text(tag),
-                          backgroundColor: Colors.grey.shade100,
-                          padding: EdgeInsets.zero,
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        );
-                      }).toList(),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(Icons.favorite, 
-                                size: 18, color: Colors.pink.shade300),
-                            const SizedBox(width: 4),
-                            Text('${post.likes}'),
-                            const SizedBox(width: 16),
-                            const Icon(Icons.comment, size: 18),
-                            const SizedBox(width: 4),
-                            Text('${post.comments}'),
+                            Text(
+                              post.title,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Row(
+                              children: [
+                                Text(
+                                  'By ${post.authorName}',
+                                  style: TextStyle(color: Colors.grey.shade700),
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  '• ${DateFormat.yMMMd().format(post.createdAt)}',
+                                  style: TextStyle(color: Colors.grey.shade700),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
-                        if (authService.user?.uid == post.authorId)
-                          Row(
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.edit, size: 18),
-                                onPressed: () {
-                                  // Navigate to edit post screen
-                                },
-                                tooltip: 'Edit',
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.delete, size: 18),
-                                onPressed: () {
-                                  _showDeleteConfirmation(context, post);
-                                },
-                                tooltip: 'Delete',
-                              ),
-                            ],
-                          ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    post.content.length > 150 
+                        ? '${post.content.substring(0, 150)}...' 
+                        : post.content,
+                  ),
+                  const SizedBox(height: 16),
+                  Wrap(
+                    spacing: 8,
+                    children: post.tags.map((tag) {
+                      return Chip(
+                        label: Text(tag),
+                        backgroundColor: Colors.grey.shade100,
+                        padding: EdgeInsets.zero,
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.favorite, 
+                              size: 18, color: Colors.pink.shade300),
+                          const SizedBox(width: 4),
+                          Text('${post.likes}'),
+                          const SizedBox(width: 16),
+                          const Icon(Icons.comment, size: 18),
+                          const SizedBox(width: 4),
+                          Text('${post.comments}'),
+                        ],
+                      ),
+                      if (authService.user?.uid == post.authorId)
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.edit, size: 18),
+                              onPressed: () {
+                                // Navigate to edit post screen
+                              },
+                              tooltip: 'Edit',
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.delete, size: 18),
+                              onPressed: () {
+                                _showDeleteConfirmation(context, post);
+                              },
+                              tooltip: 'Delete',
+                            ),
+                          ],
+                        ),
+                    ],
+                  ),
+                ],
               ),
             ),
           );
