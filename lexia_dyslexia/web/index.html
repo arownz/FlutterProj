@@ -1,11 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang = "en">
 <head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="A Flutter application for dyslexia management">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -37,61 +51,9 @@
       box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
       background-color: rgba(77, 142, 255, 0.1);
     }
-    
-    /* Loading indicator styles */
-    .loading {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      width: 100vw;
-      position: fixed;
-      background-color: #f5f5f5;
-      z-index: 999;
-    }
-    
-    .loader {
-      border: 8px solid #f3f3f3;
-      border-top: 8px solid #4D8EFF;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
   </style>
 </head>
 <body>
-  <!-- Loading indicator that shows while Flutter is initializing -->
-  <div id="loading" class="loading">
-    <div class="loader"></div>
-  </div>
-  
-  <script>
-    window.addEventListener('load', function() {
-      var loading = document.querySelector('#loading');
-      
-      _flutter.loader.load({
-        serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
-        }
-      }).then(function(engineInitializer) {
-        loading.classList.add('main_done');
-        return engineInitializer.initializeEngine();
-      }).then(function(appRunner) {
-        loading.classList.add('init_done');
-        return appRunner.runApp();
-      }).then(function() {
-        // Wait a few milliseconds, then remove the splash screen
-        setTimeout(function() {
-          loading.remove();
-        }, 200);
-      });
-    });
-  </script>
+  <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
